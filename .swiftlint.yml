@@ -1,0 +1,16 @@
+disabled_rules:
+  - trailing_comma
+  - opening_brace
+  - force_try
+
+included:
+  - Sources/
+  - Tests/
+
+identifier_name:
+  excluded:
+    - r
+
+type_name:
+  excluded:
+    - T
