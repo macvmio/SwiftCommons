@@ -10,6 +10,7 @@ included:
 identifier_name:
   excluded:
     - r
+    - id
 
 type_name:
   excluded:
