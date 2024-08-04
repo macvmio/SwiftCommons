@@ -4,7 +4,11 @@
 
 A project focused on simple, small, and reusable Swift components. It was created to support command line tools in [Mobile Infra](https://github.com/mobileinf).
 
-## Alternatives
+## `SCInject`
+
+A minimalisic and efficient dependency injection (DI) container. It aims to simplify the management of dependencies by providing a streamlined and intuitive API for registering and resolving components.
+
+### Alternatives
 
 - [Swinject](https://github.com/Swinject/Swinject)
 - [Factory](https://github.com/hmlongco/Factory)
