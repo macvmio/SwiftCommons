@@ -1,4 +1,9 @@
-//
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FILEHEADER</key>
+	<string>
 // Copyright 2024 Marcin Iwanicki and contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +17,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-
-import Foundation
-
-public final class Assembler {
-    private let container: Container
-
-    public init(container: Container) {
-        self.container = container
-    }
-
-    @discardableResult
-    public func assemble(_ assemblies: [Assembly]) -> Assembler {
-        for assembly in assemblies {
-            assembly.assemble(container)
-        }
-        return self
-    }
-
-    public func resolver() -> Resolver {
-        container
-    }
-}
+//</string>
+</dict>
+</plist>
