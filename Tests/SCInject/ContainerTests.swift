@@ -33,10 +33,10 @@ final class ContainerTests: XCTestCase {
         // When
         let class1 = container.tryResolve(TestClass1.self)
         let class2 = container.tryResolve(TestClass2.self)
-        let class1_id = container.tryResolve(TestClass1.self, id: "Test")
-        let class2_id = container.tryResolve(TestClass2.self, id: "Test")
-        let class1_id_second = container.tryResolve(TestClass1.self, id: .init(rawValue: "Test"))
-        let class2_id_second = container.tryResolve(TestClass2.self, id: .init(rawValue: "Test"))
+        let class1_name = container.tryResolve(TestClass1.self, name: "Test")
+        let class2_name = container.tryResolve(TestClass2.self, name: "Test")
+        let class1_name_second = container.tryResolve(TestClass1.self, name: .init(rawValue: "Test"))
+        let class2_name_second = container.tryResolve(TestClass2.self, name: .init(rawValue: "Test"))
         let class1_second = container.tryResolve(TestClass1.self)
         let class2_second = container.tryResolve(TestClass2.self)
 
@@ -45,43 +45,43 @@ final class ContainerTests: XCTestCase {
         XCTAssertNotNil(class2)
         XCTAssertNotNil(class1_second)
         XCTAssertNotNil(class2_second)
-        XCTAssertNil(class1_id)
-        XCTAssertNil(class2_id)
-        XCTAssertNil(class1_id_second)
-        XCTAssertNil(class2_id_second)
+        XCTAssertNil(class1_name)
+        XCTAssertNil(class2_name)
+        XCTAssertNil(class1_name_second)
+        XCTAssertNil(class2_name_second)
         XCTAssertTrue(class1 !== class1_second)
         XCTAssertTrue(class2 !== class2_second)
         XCTAssertTrue(class2?.value !== class1)
     }
 
-    func testRegister_transientClassWithId() {
-        let second: Identifier = .init(rawValue: "second")
+    func testRegister_transientClassWithName() {
+        let second: RegisterName = .init(rawValue: "second")
         let container = DefaultContainer()
         container.register(TestClass1.self) { _ in
             TestClass1(value: "TestClass1_Instance")
         }
-        container.register(TestClass1.self, id: second) { _ in
+        container.register(TestClass1.self, name: second) { _ in
             TestClass1(value: "TestClass1_Second_Instance")
         }
         container.register(TestClass2.self) { r in
-            TestClass2(value: r.resolve(TestClass1.self, id: second))
+            TestClass2(value: r.resolve(TestClass1.self, name: second))
         }
 
         // When
         let class1 = container.tryResolve(TestClass1.self)
         let class2 = container.tryResolve(TestClass2.self)
-        let class1_id = container.tryResolve(TestClass1.self, id: second)
-        let class2_id = container.tryResolve(TestClass2.self, id: second)
+        let class1_name = container.tryResolve(TestClass1.self, name: second)
+        let class2_name = container.tryResolve(TestClass2.self, name: second)
 
         // Then
         XCTAssertNotNil(class1)
         XCTAssertNotNil(class2)
-        XCTAssertNotNil(class1_id)
-        XCTAssertNil(class2_id)
-        XCTAssertEqual(class1_id?.rawValue, "TestClass1_Second_Instance")
+        XCTAssertNotNil(class1_name)
+        XCTAssertNil(class2_name)
+        XCTAssertEqual(class1_name?.rawValue, "TestClass1_Second_Instance")
         XCTAssertEqual(class2?.value.rawValue, "TestClass1_Second_Instance")
-        XCTAssertTrue(class1 !== class1_id)
-        XCTAssertTrue(class2?.value !== class1_id)
+        XCTAssertTrue(class1 !== class1_name)
+        XCTAssertTrue(class2?.value !== class1_name)
     }
 }
 

@@ -31,27 +31,27 @@ public final class DefaultContainer: Container {
     // MARK: - Registry
 
     public func register<T>(_ type: T.Type, closure: @escaping (Resolver) -> T) {
-        register(type: type, id: nil, scope: nil, closure: closure)
+        register(type: type, name: nil, scope: nil, closure: closure)
     }
 
     public func register<T>(_ type: T.Type, _ scope: Scope, closure: @escaping (Resolver) -> T) {
-        register(type: type, id: nil, scope: scope, closure: closure)
+        register(type: type, name: nil, scope: scope, closure: closure)
     }
 
-    public func register<T>(_ type: T.Type, id: String, closure: @escaping (Resolver) -> T) {
-        register(type: type, id: .init(rawValue: id), scope: nil, closure: closure)
+    public func register<T>(_ type: T.Type, name: String, closure: @escaping (Resolver) -> T) {
+        register(type: type, name: .init(rawValue: name), scope: nil, closure: closure)
     }
 
-    public func register<T>(_ type: T.Type, id: String, _ scope: Scope, closure: @escaping (Resolver) -> T) {
-        register(type: type, id: .init(rawValue: id), scope: scope, closure: closure)
+    public func register<T>(_ type: T.Type, name: String, _ scope: Scope, closure: @escaping (Resolver) -> T) {
+        register(type: type, name: .init(rawValue: name), scope: scope, closure: closure)
     }
 
-    public func register<T>(_ type: T.Type, id: Identifier, closure: @escaping (Resolver) -> T) {
-        register(type: type, id: id, scope: nil, closure: closure)
+    public func register<T>(_ type: T.Type, name: RegisterName, closure: @escaping (Resolver) -> T) {
+        register(type: type, name: name, scope: nil, closure: closure)
     }
 
-    public func register<T>(_ type: T.Type, id: Identifier, _ scope: Scope, closure: @escaping (Resolver) -> T) {
-        register(type: type, id: id, scope: scope, closure: closure)
+    public func register<T>(_ type: T.Type, name: RegisterName, _ scope: Scope, closure: @escaping (Resolver) -> T) {
+        register(type: type, name: name, scope: scope, closure: closure)
     }
 
     // MARK: - Resolver
@@ -64,13 +64,13 @@ public final class DefaultContainer: Container {
         return instance
     }
 
-    public func resolve<T>(_ type: T.Type, id: String) -> T {
-        resolve(type, id: .init(rawValue: id))
+    public func resolve<T>(_ type: T.Type, name: String) -> T {
+        resolve(type, name: .init(rawValue: name))
     }
 
-    public func resolve<T>(_ type: T.Type, id: Identifier) -> T {
-        guard let instance = tryResolve(type, id: id) else {
-            let message = errorMessage("Failed to resolve given type -- TYPE=\(type) ID=\(id.rawValue)")
+    public func resolve<T>(_ type: T.Type, name: RegisterName) -> T {
+        guard let instance = tryResolve(type, name: name) else {
+            let message = errorMessage("Failed to resolve given type -- TYPE=\(type) NAME=\(name.rawValue)")
             fatalError(message)
         }
         return instance
@@ -79,42 +79,42 @@ public final class DefaultContainer: Container {
     // MARK: - Public
 
     public func tryResolve<T>(_ type: T.Type) -> T? {
-        tryResolve(type: type, id: nil, container: self)
+        tryResolve(type: type, name: nil, container: self)
     }
 
-    public func tryResolve<T>(_ type: T.Type, id: String) -> T? {
-        tryResolve(type: type, id: .init(rawValue: id), container: self)
+    public func tryResolve<T>(_ type: T.Type, name: String) -> T? {
+        tryResolve(type: type, name: .init(rawValue: name), container: self)
     }
 
-    public func tryResolve<T>(_ type: T.Type, id: Identifier) -> T? {
-        tryResolve(type: type, id: id, container: self)
+    public func tryResolve<T>(_ type: T.Type, name: RegisterName) -> T? {
+        tryResolve(type: type, name: name, container: self)
     }
 
     // MARK: - Private
 
     private func register<T>(
         type: T.Type,
-        id: Identifier?,
+        name: RegisterName?,
         scope: Scope?,
         closure: @escaping (Resolver) -> T
     ) {
         lock.lock(); defer { lock.unlock() }
-        let identifier = identifier(of: type, id: id)
+        let identifier = identifier(of: type, name: name)
         if resolvers[identifier] != nil {
             let message =
-                errorMessage("Given type is already registered -- TYPE=\(type) ID=\(id?.rawValue ?? "nil")")
+                errorMessage("Given type is already registered -- TYPE=\(type) NAME=\(name?.rawValue ?? "nil")")
             fatalError(message)
         }
         resolvers[identifier] = makeResolver(scope ?? defaultScope, closure: closure)
     }
 
-    private func tryResolve<T>(type: T.Type, id: Identifier? = nil, container: Container) -> T? {
+    private func tryResolve<T>(type: T.Type, name: RegisterName? = nil, container: Container) -> T? {
         lock.lock(); defer { lock.unlock() }
-        if let resolver = resolvers[identifier(of: type, id: id)] {
+        if let resolver = resolvers[identifier(of: type, name: name)] {
             return resolver.resolve(with: container) as? T
         }
         if let parent {
-            return parent.tryResolve(type: type, id: id, container: container)
+            return parent.tryResolve(type: type, name: name, container: container)
         }
         return nil
     }
@@ -128,16 +128,16 @@ public final class DefaultContainer: Container {
         }
     }
 
-    private func identifier(of type: (some Any).Type, id: Identifier?) -> ResolverIdentifier {
+    private func identifier(of type: (some Any).Type, name: RegisterName?) -> ResolverIdentifier {
         ResolverIdentifier(
-            id: id,
+            name: name,
             typeIdentifier: ObjectIdentifier(type),
             description: String(describing: type)
         )
     }
 
     private struct ResolverIdentifier: Hashable {
-        let id: Identifier?
+        let name: RegisterName?
         let typeIdentifier: ObjectIdentifier
         let description: String
     }

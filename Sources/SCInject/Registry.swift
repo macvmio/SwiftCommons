@@ -20,9 +20,9 @@ public protocol Registry {
     func register<T>(_ type: T.Type, closure: @escaping (Resolver) -> T)
     func register<T>(_ type: T.Type, _ scope: Scope, closure: @escaping (Resolver) -> T)
 
-    func register<T>(_ type: T.Type, id: String, closure: @escaping (Resolver) -> T)
-    func register<T>(_ type: T.Type, id: String, _ scope: Scope, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, name: String, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, name: String, _ scope: Scope, closure: @escaping (Resolver) -> T)
 
-    func register<T>(_ type: T.Type, id: Identifier, closure: @escaping (Resolver) -> T)
-    func register<T>(_ type: T.Type, id: Identifier, _ scope: Scope, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, name: RegisterName, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, name: RegisterName, _ scope: Scope, closure: @escaping (Resolver) -> T)
 }
