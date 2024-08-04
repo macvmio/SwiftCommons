@@ -16,7 +16,7 @@
 
 import Foundation
 
-public struct Identifier: RawRepresentable, CustomStringConvertible, Hashable {
+public struct RegisterName: RawRepresentable, CustomStringConvertible, Hashable {
     public let rawValue: String
 
     public init(rawValue string: String) {
@@ -24,6 +24,6 @@ public struct Identifier: RawRepresentable, CustomStringConvertible, Hashable {
     }
 
     public var description: String {
-        "SCInject.Identifier(\(rawValue))"
+        "SCInject.RegisterName(\(rawValue))"
     }
 }

@@ -18,6 +18,6 @@ import Foundation
 
 public protocol Resolver: AnyObject {
     func resolve<T>(_ type: T.Type) -> T
-    func resolve<T>(_ type: T.Type, id: String) -> T
-    func resolve<T>(_ type: T.Type, id: Identifier) -> T
+    func resolve<T>(_ type: T.Type, name: String) -> T
+    func resolve<T>(_ type: T.Type, name: RegisterName) -> T
 }
