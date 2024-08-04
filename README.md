@@ -4,6 +4,21 @@
 
 A project focused on simple, small, and reusable Swift components. It was created to support command line tools in [Mobile Infra](https://github.com/mobileinf).
 
+## Alternatives
+
+- [Swinject](https://github.com/Swinject/Swinject)
+- [Factory](https://github.com/hmlongco/Factory)
+- [Needle](https://github.com/uber/needle)
+
+## Attributions
+
+We would like to thank the authors and contributors of the following projects:
+
+- [swift-argument-parser](https://github.com/apple/swift-argument-parser)
+- [SwiftLint](https://github.com/realm/SwiftLint)
+- [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
+- [Mise](https://github.com/jdx/mise)
+
 ## License
 
-Curie is released under version 2.0 of the [Apache License](LICENSE.txt).
+SwiftCommons is released under version 2.0 of the [Apache License](LICENSE.txt).
