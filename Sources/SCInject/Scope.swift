@@ -14,7 +14,17 @@
 // limitations under the License.
 //
 
+/// An enumeration that defines the scope of a dependency within a container.
+/// The `Scope` enum specifies how instances of dependencies are managed within a dependency injection container.
+/// It determines whether a new instance is created each time the dependency is resolved, or whether a single instance
+/// is reused throughout the container's lifetime.
+///
+/// - `transient`: A new instance of the dependency is created every time it is resolved.
+/// - `container`: A single instance of the dependency is created and reused throughout the container's lifetime.
 public enum Scope {
+    /// A new instance of the dependency is created every time it is resolved.
     case transient
+
+    /// A single instance of the dependency is created and reused throughout the container's lifetime.
     case container
 }

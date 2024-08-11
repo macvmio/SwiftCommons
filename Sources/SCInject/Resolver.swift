@@ -16,8 +16,29 @@
 
 import Foundation
 
+/// A protocol that defines an interface for resolving dependencies from a container.
+/// The `Resolver` protocol allows the retrieval of dependencies that have been previously registered in a container.
+/// Dependencies can be resolved by their type, and optionally by a name, if they were registered with one.
+/// Implementations of this protocol are typically provided by dependency injection containers, such as
+/// `DefaultContainer`.
 public protocol Resolver: AnyObject {
+    /// Resolves a dependency by its type.
+    /// - Parameter type: The type of the dependency to resolve.
+    /// - Returns: An instance of the resolved dependency.
+    /// - Note: The application will crash if the dependency cannot be resolved.
     func resolve<T>(_ type: T.Type) -> T
+
+    /// Resolves a named dependency by its type.
+    /// - Parameter type: The type of the dependency to resolve.
+    /// - Parameter name: The name associated with the dependency.
+    /// - Returns: An instance of the resolved dependency.
+    /// - Note: The application will crash if the dependency cannot be resolved.
     func resolve<T>(_ type: T.Type, name: String) -> T
+
+    /// Resolves a named dependency by its type.
+    /// - Parameter type: The type of the dependency to resolve.
+    /// - Parameter name: The `RegisterName` associated with the dependency.
+    /// - Returns: An instance of the resolved dependency.
+    /// - Note: The application will crash if the dependency cannot be resolved.
     func resolve<T>(_ type: T.Type, name: RegisterName) -> T
 }

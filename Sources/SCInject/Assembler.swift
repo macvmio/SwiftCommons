@@ -16,13 +16,21 @@
 
 import Foundation
 
+/// A class responsible for assembling dependencies and providing a `Resolver` to resolve them.
+///
+/// The `Assembler` class serves as a coordinator for assembling an array of `Assembly` instances, which configure and
+/// register dependencies within a `Container`.
+/// Once the dependencies are assembled, the `Assembler` can return a `Resolver` for resolving the dependencies.
 public final class Assembler {
     private let container: Container
 
+    /// Initializes a new Assembler with the provided Container.
     public init(container: Container) {
         self.container = container
     }
 
+    /// Assembles the provided list of Assembly instances, each of which is responsible for registering its dependencies
+    /// within the container.
     @discardableResult
     public func assemble(_ assemblies: [Assembly]) -> Assembler {
         for assembly in assemblies {
@@ -31,6 +39,7 @@ public final class Assembler {
         return self
     }
 
+    /// Provides the `Resolver` associated with the `Container` that was assembled.
     public func resolver() -> Resolver {
         container
     }

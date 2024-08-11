@@ -16,8 +16,17 @@
 
 import Foundation
 
+/// A protocol that combines `Registry` and `Resolver` functionality, representing a container that can both register
+/// and resolve dependencies.
 public protocol Container: Registry, Resolver {}
 
+/// A final class that implements the `Container` protocol, providing a dependency injection container with support for
+/// registering and resolving dependencies.
+/// The `DefaultContainer` class allows for hierarchical dependency injection with support for different scopes
+/// (`transient` and `container`).
+/// Dependencies can be registered with or without names, and resolved accordingly. If a dependency is not found in the
+/// current container, it will attempt to resolve it from a parent container if one exists.
+/// This class is thread-safe.
 public final class DefaultContainer: Container {
     private let parent: DefaultContainer?
     private let lock = NSRecursiveLock()
