@@ -16,6 +16,15 @@
 
 import Foundation
 
+/// A protocol that defines a blueprint for assembling dependencies into a registry.
+///
+/// Types conforming to the `Assembly` protocol are responsible for registering dependencies within a `Registry`
+/// instance.
+/// These dependencies can later be resolved by a `Resolver` provided by an `Assembler`.
+///
+/// This protocol is typically used in conjunction with the `Assembler` class, which coordinates the assembly process
+/// across multiple `Assembly` instances.
 public protocol Assembly {
+    /// Assembles and registers dependencies into the provided `Registry`.
     func assemble(_ registry: Registry)
 }

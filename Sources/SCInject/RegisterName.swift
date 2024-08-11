@@ -16,6 +16,7 @@
 
 import Foundation
 
+/// A structure that represents a name used for registering and resolving dependencies in a container.
 public struct RegisterName: RawRepresentable, CustomStringConvertible, Hashable {
     public let rawValue: String
 
