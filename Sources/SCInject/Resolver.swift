@@ -40,5 +40,5 @@ public protocol Resolver: AnyObject {
     /// - Parameter name: The `RegisterName` associated with the dependency.
     /// - Returns: An instance of the resolved dependency.
     /// - Note: The application will crash if the dependency cannot be resolved.
-    func resolve<T>(_ type: T.Type, name: RegisterName) -> T
+    func resolve<T>(_ type: T.Type, name: RegistrationName) -> T
 }

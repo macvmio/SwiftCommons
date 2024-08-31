@@ -51,12 +51,12 @@ public protocol Registry {
     /// - Parameter type: The type of the dependency to register.
     /// - Parameter name: The name associated with the dependency.
     /// - Parameter closure: A closure that provides the instance of the dependency.
-    func register<T>(_ type: T.Type, name: RegisterName, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, name: RegistrationName, closure: @escaping (Resolver) -> T)
 
     ///  Registers a named dependency with a specified scope.
     /// - Parameter type: The type of the dependency to register.
     /// - Parameter name: The name associated with the dependency.
     /// - Parameter scope: The scope in which the dependency should be resolved.
     /// - Parameter closure: A closure that provides the instance of the dependency.
-    func register<T>(_ type: T.Type, name: RegisterName, _ scope: Scope, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, name: RegistrationName, _ scope: Scope, closure: @escaping (Resolver) -> T)
 }
