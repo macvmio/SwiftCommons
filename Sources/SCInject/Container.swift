@@ -72,7 +72,8 @@ public final class DefaultContainer: Container {
 
     public func resolve<T>(_ type: T.Type) -> T {
         guard let instance = tryResolve(type) else {
-            let message = errorMessage("Failed to resolve given type -- TYPE=\(type)")
+            let message = "Failed to resolve given type -- TYPE=\(type)"
+            Exception.raise(reason: message)
             fatalError(message)
         }
         return instance
@@ -84,7 +85,8 @@ public final class DefaultContainer: Container {
 
     public func resolve<T>(_ type: T.Type, name: RegistrationName) -> T {
         guard let instance = tryResolve(type, name: name) else {
-            let message = errorMessage("Failed to resolve given type -- TYPE=\(type) NAME=\(name.rawValue)")
+            let message = "Failed to resolve given type -- TYPE=\(type) NAME=\(name.rawValue)"
+            Exception.raise(reason: message)
             fatalError(message)
         }
         return instance
@@ -115,8 +117,8 @@ public final class DefaultContainer: Container {
         lock.lock(); defer { lock.unlock() }
         let identifier = identifier(of: type, name: name)
         if resolvers[identifier] != nil {
-            let message =
-                errorMessage("Given type is already registered -- TYPE=\(type) NAME=\(name?.rawValue ?? "nil")")
+            let message = "Given type is already registered -- TYPE=\(type) NAME=\(name?.rawValue ?? "nil")"
+            Exception.raise(reason: message)
             fatalError(message)
         }
         resolvers[identifier] = makeResolver(scope ?? defaultScope, closure: closure)
@@ -154,10 +156,6 @@ public final class DefaultContainer: Container {
         let name: RegistrationName?
         let typeIdentifier: ObjectIdentifier
         let description: String
-    }
-
-    private func errorMessage(_ message: String) -> String {
-        "SCInjectError - \(message)"
     }
 }
 
