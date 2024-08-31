@@ -24,4 +24,4 @@ We would like to thank the authors and contributors of the following projects:
 
 ## License
 
-SwiftCommons is released under version 2.0 of the [Apache License](LICENSE.txt).
+SwiftCommons is released under version 2.0 of the [Apache License](LICENSE).
