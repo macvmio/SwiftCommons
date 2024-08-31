@@ -18,7 +18,6 @@ A minimalisic and efficient dependency injection (DI) container. It aims to simp
 
 We would like to thank the authors and contributors of the following projects:
 
-- [swift-argument-parser](https://github.com/apple/swift-argument-parser)
 - [SwiftLint](https://github.com/realm/SwiftLint)
 - [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
 - [Mise](https://github.com/jdx/mise)
