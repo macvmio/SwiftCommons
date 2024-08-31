@@ -20,6 +20,12 @@ let package = Package(
     targets: [
         .target(
             name: "SCInject",
+            dependencies: [
+                .target(name: "SCInjectObjc"),
+            ]
+        ),
+        .target(
+            name: "SCInjectObjc",
             dependencies: []
         ),
         .testTarget(

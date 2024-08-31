@@ -83,6 +83,44 @@ final class ContainerTests: XCTestCase {
         XCTAssertTrue(class1 !== class1_name)
         XCTAssertTrue(class2?.value !== class1_name)
     }
+
+    func testValidate() {
+        // Given
+        let second: RegistrationName = .init(rawValue: "second")
+        let container = DefaultContainer()
+        container.register(TestClass1.self) { _ in
+            TestClass1(value: "TestClass1_Instance")
+        }
+        container.register(TestClass1.self, name: second) { _ in
+            TestClass1(value: "TestClass1_Second_Instance")
+        }
+        container.register(TestClass2.self) { r in
+            TestClass2(value: r.resolve(TestClass1.self, name: second))
+        }
+
+        // When / Then
+        XCTAssertNoThrow(try container.validate())
+    }
+
+    func testValidate_missingNamedType() {
+        // Given
+        let second: RegistrationName = .init(rawValue: "second")
+        let container = DefaultContainer()
+        container.register(TestClass1.self) { _ in
+            TestClass1(value: "TestClass1_Instance")
+        }
+        container.register(TestClass2.self) { r in
+            TestClass2(value: r.resolve(TestClass1.self, name: second))
+        }
+
+        // When / Then
+        XCTAssertThrowsError(try container.validate()) { error in
+            let error = error as? ContainerError
+            XCTAssertEqual(error?.reason, "Failed to resolve given type")
+            XCTAssertEqual(error?.type, "TestClass1")
+            XCTAssertNil(error?.name)
+        }
+    }
 }
 
 // swiftlint:enable identifier_name
