@@ -55,11 +55,16 @@ public final class DefaultContainer: Container {
         register(type: type, name: .init(rawValue: name), scope: scope, closure: closure)
     }
 
-    public func register<T>(_ type: T.Type, name: RegisterName, closure: @escaping (Resolver) -> T) {
+    public func register<T>(_ type: T.Type, name: RegistrationName, closure: @escaping (Resolver) -> T) {
         register(type: type, name: name, scope: nil, closure: closure)
     }
 
-    public func register<T>(_ type: T.Type, name: RegisterName, _ scope: Scope, closure: @escaping (Resolver) -> T) {
+    public func register<T>(
+        _ type: T.Type,
+        name: RegistrationName,
+        _ scope: Scope,
+        closure: @escaping (Resolver) -> T
+    ) {
         register(type: type, name: name, scope: scope, closure: closure)
     }
 
@@ -77,7 +82,7 @@ public final class DefaultContainer: Container {
         resolve(type, name: .init(rawValue: name))
     }
 
-    public func resolve<T>(_ type: T.Type, name: RegisterName) -> T {
+    public func resolve<T>(_ type: T.Type, name: RegistrationName) -> T {
         guard let instance = tryResolve(type, name: name) else {
             let message = errorMessage("Failed to resolve given type -- TYPE=\(type) NAME=\(name.rawValue)")
             fatalError(message)
@@ -95,7 +100,7 @@ public final class DefaultContainer: Container {
         tryResolve(type: type, name: .init(rawValue: name), container: self)
     }
 
-    public func tryResolve<T>(_ type: T.Type, name: RegisterName) -> T? {
+    public func tryResolve<T>(_ type: T.Type, name: RegistrationName) -> T? {
         tryResolve(type: type, name: name, container: self)
     }
 
@@ -103,7 +108,7 @@ public final class DefaultContainer: Container {
 
     private func register<T>(
         type: T.Type,
-        name: RegisterName?,
+        name: RegistrationName?,
         scope: Scope?,
         closure: @escaping (Resolver) -> T
     ) {
@@ -117,7 +122,7 @@ public final class DefaultContainer: Container {
         resolvers[identifier] = makeResolver(scope ?? defaultScope, closure: closure)
     }
 
-    private func tryResolve<T>(type: T.Type, name: RegisterName? = nil, container: Container) -> T? {
+    private func tryResolve<T>(type: T.Type, name: RegistrationName? = nil, container: Container) -> T? {
         lock.lock(); defer { lock.unlock() }
         if let resolver = resolvers[identifier(of: type, name: name)] {
             return resolver.resolve(with: container) as? T
@@ -137,7 +142,7 @@ public final class DefaultContainer: Container {
         }
     }
 
-    private func identifier(of type: (some Any).Type, name: RegisterName?) -> ResolverIdentifier {
+    private func identifier(of type: (some Any).Type, name: RegistrationName?) -> ResolverIdentifier {
         ResolverIdentifier(
             name: name,
             typeIdentifier: ObjectIdentifier(type),
@@ -146,7 +151,7 @@ public final class DefaultContainer: Container {
     }
 
     private struct ResolverIdentifier: Hashable {
-        let name: RegisterName?
+        let name: RegistrationName?
         let typeIdentifier: ObjectIdentifier
         let description: String
     }

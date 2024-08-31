@@ -55,7 +55,7 @@ final class ContainerTests: XCTestCase {
     }
 
     func testRegister_transientClassWithName() {
-        let second: RegisterName = .init(rawValue: "second")
+        let second: RegistrationName = .init(rawValue: "second")
         let container = DefaultContainer()
         container.register(TestClass1.self) { _ in
             TestClass1(value: "TestClass1_Instance")
