@@ -14,14 +14,19 @@
 // limitations under the License.
 //
 
-import Foundation
+#import <Foundation/Foundation.h>
 
-final class Exception: NSException {
-    static func raise(reason: String, userInfo: [String: String] = [:]) {
-        Exception(
-            name: NSExceptionName(rawValue: "SCInject.Exception"),
-            reason: reason,
-            userInfo: userInfo
-        ).raise()
-    }
-}
+NS_ASSUME_NONNULL_BEGIN
+
+extern NSString* const CSContainerExceptionTypeKey;
+extern NSString* const CSContainerExceptionNameKey;
+
+@interface ContainerException : NSObject
+
++ (void)raiseWithReason:(NSString *)reason type:(NSString *)type name:(nullable NSString *)name NS_SWIFT_NAME(raise(reason:type:name:));
++ (void)catchException:(__attribute__((noescape)) void (^)(void))operation
+             withError:(NSError **)error __attribute__((swift_error(nonnull_error)));
+
+@end
+
+NS_ASSUME_NONNULL_END

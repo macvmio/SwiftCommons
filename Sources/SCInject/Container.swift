@@ -72,9 +72,8 @@ public final class DefaultContainer: Container {
 
     public func resolve<T>(_ type: T.Type) -> T {
         guard let instance = tryResolve(type) else {
-            let message = "Failed to resolve given type -- TYPE=\(type)"
-            Exception.raise(reason: message)
-            fatalError(message)
+            ContainerError.raise(reason: "Failed to resolve given type", type: "\(type)", name: nil)
+            fatalError()
         }
         return instance
     }
@@ -85,9 +84,8 @@ public final class DefaultContainer: Container {
 
     public func resolve<T>(_ type: T.Type, name: RegistrationName) -> T {
         guard let instance = tryResolve(type, name: name) else {
-            let message = "Failed to resolve given type -- TYPE=\(type) NAME=\(name.rawValue)"
-            Exception.raise(reason: message)
-            fatalError(message)
+            ContainerError.raise(reason: "Failed to resolve given type", type: "\(type)", name: name.rawValue)
+            fatalError()
         }
         return instance
     }
@@ -106,6 +104,34 @@ public final class DefaultContainer: Container {
         tryResolve(type: type, name: name, container: self)
     }
 
+    /// Validates the dependency graph to ensure that all dependencies
+    /// can be successfully resolved.
+    ///
+    /// This method attempts to resolve each dependency registered in the container,
+    /// verifying that all dependencies can be satisfied without errors. If any
+    /// dependency cannot be resolved, an error is thrown to indicate
+    /// the issue.
+    ///
+    /// The validation process is performed recursively. If the container has a
+    /// parent container, the method will also validate the parent container's
+    /// dependency graph.
+    ///
+    /// - Throws:
+    ///   - `ContainerError` if any dependency within the graph cannot be resolved.
+    ///
+    /// - Note:
+    ///   This method is useful for ensuring that the dependency injection setup
+    ///   is correct. It can be particularly valuable during development or testing
+    ///   to catch configuration issues early.
+    public func validate() throws {
+        try ContainerError.rethrow {
+            for resolver in resolvers {
+                _ = resolver.value.resolve(with: self)
+            }
+        }
+        try parent?.validate()
+    }
+
     // MARK: - Private
 
     private func register<T>(
@@ -117,9 +143,8 @@ public final class DefaultContainer: Container {
         lock.lock(); defer { lock.unlock() }
         let identifier = identifier(of: type, name: name)
         if resolvers[identifier] != nil {
-            let message = "Given type is already registered -- TYPE=\(type) NAME=\(name?.rawValue ?? "nil")"
-            Exception.raise(reason: message)
-            fatalError(message)
+            ContainerError.raise(reason: "Given type is already registered", type: "\(type)", name: name?.rawValue)
+            fatalError()
         }
         resolvers[identifier] = makeResolver(scope ?? defaultScope, closure: closure)
     }
