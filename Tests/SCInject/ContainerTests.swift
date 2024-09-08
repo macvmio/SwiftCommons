@@ -102,7 +102,7 @@ final class ContainerTests: XCTestCase {
         XCTAssertNoThrow(try container.validate())
     }
 
-    func testValidate_missingNamedType() {
+    func testValidate_missingNamedType() throws {
         // Given
         let second: RegistrationName = .init(rawValue: "second")
         let container = DefaultContainer()
@@ -116,9 +116,9 @@ final class ContainerTests: XCTestCase {
         // When / Then
         XCTAssertThrowsError(try container.validate()) { error in
             let error = error as? ContainerError
-            XCTAssertEqual(error?.reason, "Failed to resolve given type")
+            XCTAssertEqual(error?.reason, "Failed to resolve given type -- TYPE=TestClass1 NAME=second")
             XCTAssertEqual(error?.type, "TestClass1")
-            XCTAssertNil(error?.name)
+            XCTAssertEqual(error?.name, second.rawValue)
         }
     }
 }
