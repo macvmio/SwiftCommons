@@ -18,18 +18,24 @@
 
 NSString* const CSContainerExceptionTypeKey = @"SCContainerExceptionTypeKey";
 NSString* const CSContainerExceptionNameKey = @"SCContainerExceptionNameKey";
+NSString* const CSContainerExceptionReasonKey = @"SCContainerExceptionReasonKey";
 
 @implementation ContainerException
 
 + (void)raiseWithReason:(NSString *)reason type:(NSString *)type name:(nullable NSString *)name {
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{
-        CSContainerExceptionTypeKey: type
+        CSContainerExceptionTypeKey: type,
+        CSContainerExceptionReasonKey: reason
     }];
+    NSMutableString *details = [[NSMutableString alloc] init];
+    [details appendFormat:@"TYPE=%@", type];
     if (name) {
         userInfo[CSContainerExceptionNameKey] = name;
+        [details appendFormat:@" NAME=%@", name];
     }
+
     @throw [NSException exceptionWithName:@"SCBasicObjc.Exception"
-                                   reason:reason
+                                   reason:[NSString stringWithFormat:@"%@ -- %@", reason, details]
                                  userInfo:userInfo];
 }
 
@@ -42,7 +48,8 @@ NSString* const CSContainerExceptionNameKey = @"SCContainerExceptionNameKey";
         if (error) {
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:@{
                 NSLocalizedDescriptionKey: exception.reason,
-                NSLocalizedFailureReasonErrorKey: exception.name,
+                NSLocalizedFailureErrorKey: exception.name,
+                CSContainerExceptionReasonKey: exception.userInfo[CSContainerExceptionReasonKey],
                 CSContainerExceptionTypeKey: exception.userInfo[CSContainerExceptionTypeKey]
             }];
             NSString *name = exception.userInfo[CSContainerExceptionNameKey];

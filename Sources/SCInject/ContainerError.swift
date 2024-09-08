@@ -40,7 +40,7 @@ public struct ContainerError: Error {
     }
 
     static func raise(reason: String, type: String, name: String?) {
-        ContainerException.raise(reason: reason, type: type, name: nil)
+        ContainerException.raise(reason: reason, type: type, name: name)
     }
 
     // MARK: - Private
