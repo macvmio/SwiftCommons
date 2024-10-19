@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/mobileinf/SwiftCommons/actions/workflows/main.yml/badge.svg)](https://github.com/mobileinf/SwiftCommons/actions/workflows/main.yml)
 
-A project focused on simple, small, and reusable Swift components. It was created to support command line tools in [macvm.io](https://github.com/macvmio).
+A project focused on simple, small, and reusable Swift components. It was created to support command line tools in [macvm](https://github.com/macvmio).
 
 ## `SCInject`
 
