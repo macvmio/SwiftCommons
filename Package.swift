@@ -24,21 +24,21 @@ let package = Package(
                 .target(name: "SCInjectObjc"),
             ],
             swiftSettings: [
-                .swiftLanguageMode(.v6)
+                .swiftLanguageMode(.v6),
             ]
         ),
         .target(
             name: "SCInjectObjc",
             dependencies: [],
             swiftSettings: [
-                .swiftLanguageMode(.v6)
+                .swiftLanguageMode(.v6),
             ]
         ),
         .testTarget(
             name: "SCInjectTests",
             dependencies: ["SCInject"],
             swiftSettings: [
-                .swiftLanguageMode(.v6)
+                .swiftLanguageMode(.v6),
             ]
         ),
     ]
