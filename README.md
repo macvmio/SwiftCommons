@@ -20,7 +20,7 @@ We would like to thank the authors and contributors of the following projects:
 
 - [SwiftLint](https://github.com/realm/SwiftLint)
 - [SwiftFormat](https://github.com/nicklockwood/SwiftFormat)
-- [Mise](https://github.com/jdx/mise)
+- [mise](https://github.com/jdx/mise)
 
 ## License
 
