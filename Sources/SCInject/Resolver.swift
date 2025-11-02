@@ -21,7 +21,7 @@ import Foundation
 /// Dependencies can be resolved by their type, and optionally by a name, if they were registered with one.
 /// Implementations of this protocol are typically provided by dependency injection containers, such as
 /// `DefaultContainer`.
-public protocol Resolver: AnyObject {
+public protocol Resolver: AnyObject, Sendable {
     /// Resolves a dependency by its type.
     /// - Parameter type: The type of the dependency to resolve.
     /// - Returns: An instance of the resolved dependency.
@@ -41,4 +41,26 @@ public protocol Resolver: AnyObject {
     /// - Returns: An instance of the resolved dependency.
     /// - Note: The application will crash if the dependency cannot be resolved.
     func resolve<T>(_ type: T.Type, name: RegistrationName) -> T
+
+    // MARK: - Async Resolution
+
+    /// Asynchronously resolves a dependency by its type.
+    /// - Parameter type: The type of the dependency to resolve.
+    /// - Returns: An instance of the resolved dependency.
+    /// - Note: The application will crash if the dependency cannot be resolved.
+    func resolveAsync<T>(_ type: T.Type) async -> T
+
+    /// Asynchronously resolves a named dependency by its type.
+    /// - Parameter type: The type of the dependency to resolve.
+    /// - Parameter name: The name associated with the dependency.
+    /// - Returns: An instance of the resolved dependency.
+    /// - Note: The application will crash if the dependency cannot be resolved.
+    func resolveAsync<T>(_ type: T.Type, name: String) async -> T
+
+    /// Asynchronously resolves a named dependency by its type.
+    /// - Parameter type: The type of the dependency to resolve.
+    /// - Parameter name: The `RegisterName` associated with the dependency.
+    /// - Returns: An instance of the resolved dependency.
+    /// - Note: The application will crash if the dependency cannot be resolved.
+    func resolveAsync<T>(_ type: T.Type, name: RegistrationName) async -> T
 }

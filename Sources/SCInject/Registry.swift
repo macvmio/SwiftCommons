@@ -59,4 +59,53 @@ public protocol Registry {
     /// - Parameter scope: The scope in which the dependency should be resolved.
     /// - Parameter closure: A closure that provides the instance of the dependency.
     func register<T>(_ type: T.Type, name: RegistrationName, _ scope: Scope, closure: @escaping (Resolver) -> T)
+
+    // MARK: - Async Registration
+
+    /// Registers an async dependency with a transient scope.
+    /// - Parameter type: The type of the dependency to register.
+    /// - Parameter closure: An async closure that provides the instance of the dependency.
+    func registerAsync<T>(_ type: T.Type, closure: @escaping @Sendable (Resolver) async -> T)
+
+    ///  Registers an async dependency with a specified scope.
+    /// - Parameter type: The type of the dependency to register.
+    /// - Parameter scope: The scope in which the dependency should be resolved.
+    /// - Parameter closure: An async closure that provides the instance of the dependency.
+    func registerAsync<T>(_ type: T.Type, _ scope: Scope, closure: @escaping @Sendable (Resolver) async -> T)
+
+    ///  Registers a named async dependency with a transient scope.
+    /// - Parameter type: The type of the dependency to register.
+    /// - Parameter name: The name associated with the dependency.
+    /// - Parameter closure: An async closure that provides the instance of the dependency.
+    func registerAsync<T>(_ type: T.Type, name: String, closure: @escaping @Sendable (Resolver) async -> T)
+
+    ///  Registers a named async dependency with a specified scope.
+    /// - Parameter type: The type of the dependency to register.
+    /// - Parameter name: The name associated with the dependency.
+    /// - Parameter scope: The scope in which the dependency should be resolved.
+    /// - Parameter closure: An async closure that provides the instance of the dependency.
+    func registerAsync<T>(
+        _ type: T.Type,
+        name: String,
+        _ scope: Scope,
+        closure: @escaping @Sendable (Resolver) async -> T
+    )
+
+    ///  Registers a named async dependency with a transient scope.
+    /// - Parameter type: The type of the dependency to register.
+    /// - Parameter name: The name associated with the dependency.
+    /// - Parameter closure: An async closure that provides the instance of the dependency.
+    func registerAsync<T>(_ type: T.Type, name: RegistrationName, closure: @escaping @Sendable (Resolver) async -> T)
+
+    ///  Registers a named async dependency with a specified scope.
+    /// - Parameter type: The type of the dependency to register.
+    /// - Parameter name: The name associated with the dependency.
+    /// - Parameter scope: The scope in which the dependency should be resolved.
+    /// - Parameter closure: An async closure that provides the instance of the dependency.
+    func registerAsync<T>(
+        _ type: T.Type,
+        name: RegistrationName,
+        _ scope: Scope,
+        closure: @escaping @Sendable (Resolver) async -> T
+    )
 }
