@@ -105,8 +105,14 @@ The container provides a `validate()` method to verify all dependencies can be r
 - `Sources/SCInjectObjc/`: Objective-C support module
 - `Tests/SCInjectTests/`: Test suite with XCTest
 
-## Swift Language
+## Development Environment
 
+**Required Versions:**
+- Xcode 26.0.1
+- Swift 6.2
+- macOS 26 (for CI compatibility)
+
+**Swift Language:**
 - Project uses Swift 6 language mode (strict concurrency)
 - Minimum platform versions:
   - macOS 10.13
@@ -143,3 +149,12 @@ mise install
 The project uses mise (.mise.toml) to manage tool versions:
 - swiftlint 0.54.0
 - swiftformat 0.53.3
+
+## CI/CD
+
+The project uses GitHub Actions (.github/workflows/main.yml) with three jobs:
+- **Lint**: Runs SwiftLint and SwiftFormat checks
+- **Build**: Builds the project with SPM caching
+- **Test**: Runs the test suite with SPM caching
+
+All jobs run on `macos-26` with Xcode 26.0.1.
