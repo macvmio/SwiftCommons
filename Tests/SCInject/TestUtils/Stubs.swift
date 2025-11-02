@@ -31,3 +31,23 @@ class TestClass2 {
         self.value = value
     }
 }
+
+actor TestActor1 {
+    let rawValue: String
+
+    init(value: String) async {
+        // Simulate async initialization
+        try? await Task.sleep(nanoseconds: 1_000_000) // 1ms
+        rawValue = value
+    }
+}
+
+actor TestActor2 {
+    let value: TestActor1
+
+    init(value: TestActor1) async {
+        // Simulate async initialization
+        try? await Task.sleep(nanoseconds: 1_000_000) // 1ms
+        self.value = value
+    }
+}
