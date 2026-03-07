@@ -21,7 +21,7 @@ import Foundation
 /// Dependencies can be resolved by their type, and optionally by a name, if they were registered with one.
 /// Implementations of this protocol are typically provided by dependency injection containers, such as
 /// `DefaultContainer`.
-public protocol Resolver: AnyObject {
+public protocol Resolver: AnyObject, Sendable {
     /// Resolves a dependency by its type.
     /// - Parameter type: The type of the dependency to resolve.
     /// - Returns: An instance of the resolved dependency.

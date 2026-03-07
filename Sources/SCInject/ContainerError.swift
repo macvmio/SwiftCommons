@@ -23,7 +23,7 @@ import SCInjectObjc
 /// This error type is used to encapsulate specific details about the failure,
 /// including the reason for the error, the type of the service that caused the
 /// error, and an optional name associated with the service.
-public struct ContainerError: Error {
+public struct ContainerError: Error, Sendable {
     /// A description of the reason why the error occurred.
     public let reason: String
 

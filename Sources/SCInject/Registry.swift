@@ -22,41 +22,46 @@ import Foundation
 /// registered types.
 /// These registered dependencies can later be resolved by a `Resolver`.
 /// This protocol is typically implemented by dependency injection containers, such as `DefaultContainer`.
-public protocol Registry {
+public protocol Registry: Sendable {
     /// Registers a dependency with a transient scope.
     /// - Parameter type: The type of the dependency to register.
     /// - Parameter closure: A closure that provides the instance of the dependency.
-    func register<T>(_ type: T.Type, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, closure: @escaping @Sendable (Resolver) -> T)
 
     ///  Registers a dependency with a specified scope.
     /// - Parameter type: The type of the dependency to register.
     /// - Parameter scope: The scope in which the dependency should be resolved.
     /// - Parameter closure: A closure that provides the instance of the dependency.
-    func register<T>(_ type: T.Type, _ scope: Scope, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, _ scope: Scope, closure: @escaping @Sendable (Resolver) -> T)
 
     ///  Registers a named dependency with a transient scope.
     /// - Parameter type: The type of the dependency to register.
     /// - Parameter name: The name associated with the dependency.
     /// - Parameter closure: A closure that provides the instance of the dependency.
-    func register<T>(_ type: T.Type, name: String, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, name: String, closure: @escaping @Sendable (Resolver) -> T)
 
     ///  Registers a named dependency with a specified scope.
     /// - Parameter type: The type of the dependency to register.
     /// - Parameter name: The name associated with the dependency.
     /// - Parameter scope: The scope in which the dependency should be resolved.
     /// - Parameter closure: A closure that provides the instance of the dependency.
-    func register<T>(_ type: T.Type, name: String, _ scope: Scope, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, name: String, _ scope: Scope, closure: @escaping @Sendable (Resolver) -> T)
 
     ///  Registers a named dependency with a transient scope.
     /// - Parameter type: The type of the dependency to register.
     /// - Parameter name: The name associated with the dependency.
     /// - Parameter closure: A closure that provides the instance of the dependency.
-    func register<T>(_ type: T.Type, name: RegistrationName, closure: @escaping (Resolver) -> T)
+    func register<T>(_ type: T.Type, name: RegistrationName, closure: @escaping @Sendable (Resolver) -> T)
 
     ///  Registers a named dependency with a specified scope.
     /// - Parameter type: The type of the dependency to register.
     /// - Parameter name: The name associated with the dependency.
     /// - Parameter scope: The scope in which the dependency should be resolved.
     /// - Parameter closure: A closure that provides the instance of the dependency.
-    func register<T>(_ type: T.Type, name: RegistrationName, _ scope: Scope, closure: @escaping (Resolver) -> T)
+    func register<T>(
+        _ type: T.Type,
+        name: RegistrationName,
+        _ scope: Scope,
+        closure: @escaping @Sendable (Resolver) -> T
+    )
 }

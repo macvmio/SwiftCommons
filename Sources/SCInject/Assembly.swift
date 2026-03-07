@@ -24,7 +24,7 @@ import Foundation
 ///
 /// This protocol is typically used in conjunction with the `Assembler` class, which coordinates the assembly process
 /// across multiple `Assembly` instances.
-public protocol Assembly {
+public protocol Assembly: Sendable {
     /// Assembles and registers dependencies into the provided `Registry`.
     func assemble(_ registry: Registry)
 }
