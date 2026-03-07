@@ -8,7 +8,7 @@ on:
       - main
 
 env:
-  DEVELOPER_DIR: "/Applications/Xcode_26.0.1.app/Contents/Developer"
+  DEVELOPER_DIR: "/Applications/Xcode_26.3.app/Contents/Developer"
   GITHUB_API_TOKEN: ${{ github.token }}
 
 permissions:
