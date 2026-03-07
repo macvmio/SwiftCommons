@@ -22,8 +22,6 @@ jobs:
     - uses: actions/checkout@v4
     - name: Run setup
       run: make setup
-    - name: Remove quarantine from mise tools
-      run: find "$HOME/.local/share/mise" -type f -perm +111 -exec xattr -d com.apple.quarantine {} + 2>/dev/null || true
     - name: Run lint
       run: make lint
 
