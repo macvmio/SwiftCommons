@@ -25,6 +25,7 @@ let package = Package(
             ],
             swiftSettings: [
                 .swiftLanguageMode(.v6),
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .target(
@@ -32,6 +33,7 @@ let package = Package(
             dependencies: [],
             swiftSettings: [
                 .swiftLanguageMode(.v6),
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(
@@ -39,6 +41,7 @@ let package = Package(
             dependencies: ["SCInject"],
             swiftSettings: [
                 .swiftLanguageMode(.v6),
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
     ]

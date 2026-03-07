@@ -21,7 +21,7 @@
 ///
 /// - `transient`: A new instance of the dependency is created every time it is resolved.
 /// - `container`: A single instance of the dependency is created and reused throughout the container's lifetime.
-public enum Scope {
+public enum Scope: Sendable {
     /// A new instance of the dependency is created every time it is resolved.
     case transient
 

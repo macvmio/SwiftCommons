@@ -27,7 +27,7 @@ public protocol Container: Registry, Resolver {}
 /// Dependencies can be registered with or without names, and resolved accordingly. If a dependency is not found in the
 /// current container, it will attempt to resolve it from a parent container if one exists.
 /// This class is thread-safe.
-public final class DefaultContainer: Container {
+public final class DefaultContainer: Container, @unchecked Sendable {
     private let parent: DefaultContainer?
     private let lock = NSRecursiveLock()
     private let defaultScope = Scope.transient
@@ -39,23 +39,28 @@ public final class DefaultContainer: Container {
 
     // MARK: - Registry
 
-    public func register<T>(_ type: T.Type, closure: @escaping (Resolver) -> T) {
+    public func register<T>(_ type: T.Type, closure: @escaping @Sendable (Resolver) -> T) {
         register(type: type, name: nil, scope: nil, closure: closure)
     }
 
-    public func register<T>(_ type: T.Type, _ scope: Scope, closure: @escaping (Resolver) -> T) {
+    public func register<T>(_ type: T.Type, _ scope: Scope, closure: @escaping @Sendable (Resolver) -> T) {
         register(type: type, name: nil, scope: scope, closure: closure)
     }
 
-    public func register<T>(_ type: T.Type, name: String, closure: @escaping (Resolver) -> T) {
+    public func register<T>(_ type: T.Type, name: String, closure: @escaping @Sendable (Resolver) -> T) {
         register(type: type, name: .init(rawValue: name), scope: nil, closure: closure)
     }
 
-    public func register<T>(_ type: T.Type, name: String, _ scope: Scope, closure: @escaping (Resolver) -> T) {
+    public func register<T>(
+        _ type: T.Type,
+        name: String,
+        _ scope: Scope,
+        closure: @escaping @Sendable (Resolver) -> T
+    ) {
         register(type: type, name: .init(rawValue: name), scope: scope, closure: closure)
     }
 
-    public func register<T>(_ type: T.Type, name: RegistrationName, closure: @escaping (Resolver) -> T) {
+    public func register<T>(_ type: T.Type, name: RegistrationName, closure: @escaping @Sendable (Resolver) -> T) {
         register(type: type, name: name, scope: nil, closure: closure)
     }
 
@@ -63,7 +68,7 @@ public final class DefaultContainer: Container {
         _ type: T.Type,
         name: RegistrationName,
         _ scope: Scope,
-        closure: @escaping (Resolver) -> T
+        closure: @escaping @Sendable (Resolver) -> T
     ) {
         register(type: type, name: name, scope: scope, closure: closure)
     }
@@ -138,7 +143,7 @@ public final class DefaultContainer: Container {
         type: T.Type,
         name: RegistrationName?,
         scope: Scope?,
-        closure: @escaping (Resolver) -> T
+        closure: @escaping @Sendable (Resolver) -> T
     ) {
         lock.lock(); defer { lock.unlock() }
         let identifier = identifier(of: type, name: name)
@@ -160,7 +165,10 @@ public final class DefaultContainer: Container {
         return nil
     }
 
-    private func makeResolver(_ scope: Scope, closure: @escaping (Resolver) -> some Any) -> ReferenceResolver {
+    private func makeResolver(
+        _ scope: Scope,
+        closure: @escaping @Sendable (Resolver) -> some Any
+    ) -> ReferenceResolver {
         switch scope {
         case .transient:
             TransientReferenceResolver(factory: closure)
@@ -184,14 +192,14 @@ public final class DefaultContainer: Container {
     }
 }
 
-private protocol ReferenceResolver {
+private protocol ReferenceResolver: Sendable {
     func resolve(with resolver: Resolver) -> Any
 }
 
-private final class TransientReferenceResolver: ReferenceResolver {
-    private let factory: (Resolver) -> Any
+private final class TransientReferenceResolver: ReferenceResolver, @unchecked Sendable {
+    private let factory: @Sendable (Resolver) -> Any
 
-    init(factory: @escaping (Resolver) -> Any) {
+    init(factory: @escaping @Sendable (Resolver) -> Any) {
         self.factory = factory
     }
 
@@ -200,12 +208,12 @@ private final class TransientReferenceResolver: ReferenceResolver {
     }
 }
 
-private final class ContainerReferenceResolver: ReferenceResolver {
+private final class ContainerReferenceResolver: ReferenceResolver, @unchecked Sendable {
     private var instance: Any?
 
-    private let factory: (Resolver) -> Any
+    private let factory: @Sendable (Resolver) -> Any
 
-    init(factory: @escaping (Resolver) -> Any) {
+    init(factory: @escaping @Sendable (Resolver) -> Any) {
         self.factory = factory
     }
 

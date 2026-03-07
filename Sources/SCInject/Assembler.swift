@@ -21,7 +21,7 @@ import Foundation
 /// The `Assembler` class serves as a coordinator for assembling an array of `Assembly` instances, which configure and
 /// register dependencies within a `Container`.
 /// Once the dependencies are assembled, the `Assembler` can return a `Resolver` for resolving the dependencies.
-public final class Assembler {
+public final class Assembler: Sendable {
     private let container: Container
 
     /// Initializes a new Assembler with the provided Container.
